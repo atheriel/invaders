@@ -1,4 +1,25 @@
 #' @export
+display_brewer <- function(palette, jitter = TRUE) {
+    # First, check for RColorBrewer.
+    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+        stop("The RColorBrewer package is required to use this function.")
+    }
+    
+    # Check the palette argument.
+    if (!is.character(palette))
+        stop("The palette argument must be a string.")
+    if (is.na(brewer.pal.info[palette, 'maxcolors']))
+        stop(paste(palette, "is not a recognized RColorBrewer palette."))
+    
+    # Extract the full palette of colours from RColorBrewer.
+    colours <- brewer.pal(brewer.pal.info[palette, 'maxcolors'], palette)
+    
+    # Call the main display function with the colour parameter set by the
+    # RColorBrewer palette.
+    display_colours(colours, jitter)
+}
+
+#' @export
 display_colours <- function(colours, jitter = TRUE) {
     # Check the colours argument.
     if (!is.character(colours))
