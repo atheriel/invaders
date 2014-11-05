@@ -28,9 +28,15 @@ display_colours <- function(colours, jitter = TRUE) {
         result
     }
     
-    alien.list <- data.table::rbindlist(mapply(
-        flatten_, mat = aliens, id = ids, SIMPLIFY = FALSE
-    ))
+    if (requireNamespace("data.table", quietly = TRUE)) {
+        alien.list <- data.table::rbindlist(mapply(
+            flatten_, mat = aliens, id = ids, SIMPLIFY = FALSE
+        ))
+    } else {
+        alien.list <- do.call("rbind", mapply(
+            flatten_, mat = aliens, id = ids, SIMPLIFY = FALSE
+        ))
+    }
     
     colour.map <- data.frame(
         value = 0:1,
