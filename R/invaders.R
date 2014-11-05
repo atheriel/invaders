@@ -29,8 +29,8 @@ display_colours <- function(colours, jitter = TRUE) {
         colours <- colours[-1]
     }
     
-    if (is.logical(jitter))
-        j.amount <- ifelse(jitter, 0.15, 0.0)
+    if (is.logical(jitter)) j.amount <-
+        ifelse(jitter, getOption("invaders.default.jitter", 0.15), 0.0)
     else if (is.numeric(jitter) && jitter >= 0)
         j.amount <- jitter
     else
@@ -41,7 +41,7 @@ display_colours <- function(colours, jitter = TRUE) {
     size <- length(colours) / 2
     aliens <- sample(ALIENS, size,
                      replace = ifelse(size > length(ALIENS), TRUE, FALSE))
-    ids <- sample(LETTERS, size)
+    ids <- LETTERS[1:size]
     
     flatten_ <- function(mat, id) {
         result <- to_coordinates(mat)
@@ -71,13 +71,16 @@ display_colours <- function(colours, jitter = TRUE) {
         final$colour <- jitter(final$colour, amount = j.amount)
     }
     
+    # Set the number of rows in the output, using the package option as a rule.
+    n.rows <- ifelse(size < getOption("invaders.wrap.at", 5), 1, 2)
+    
     g <-
         ggplot2::ggplot(final, ggplot2::aes(x = x, y = y, fill = colour)) +
         ggplot2::geom_tile(colour = "gray65", size = 0.01) +
         ggplot2::scale_fill_gradientn(colours = colours) +
         ggplot2::scale_y_continuous(expand = c(0, 0), trans = "reverse") +
         ggplot2::scale_x_continuous(expand = c(0, 0)) +
-        ggplot2::facet_wrap(~ id, nrow = 2) +
+        ggplot2::facet_wrap(~ id, nrow = n.rows) +
         ggplot2::coord_equal() +
         ggplot2::theme(
             axis.text = ggplot2::element_blank(),
