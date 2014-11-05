@@ -1,5 +1,6 @@
-# This is the pixel data for the space invaders sprites.
-ALIENS <- list(
+# This is the pixel data for the space invader sprites.
+INVADERS <- list(
+    # An explosion sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,1,0,0,1,0,0,1,0,0,0,0,
              0,0,1,0,0,1,1,0,0,1,0,0,
@@ -13,6 +14,7 @@ ALIENS <- list(
              0,0,0,0,1,0,0,1,0,0,1,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # A version of the original "squid" sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,1,1,0,0,0,0,0,
@@ -26,6 +28,7 @@ ALIENS <- list(
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # Another version of the original "squid" sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,1,1,0,0,0,0,0,
@@ -39,6 +42,7 @@ ALIENS <- list(
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # The original space invader sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,1,0,0,0,0,1,0,0,0,
@@ -52,6 +56,7 @@ ALIENS <- list(
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # The a version of the heavier-looking invader sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,1,1,1,1,0,0,0,0,
@@ -65,6 +70,7 @@ ALIENS <- list(
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # A squid-like sprite.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,1,1,1,1,0,0,0,0,
@@ -78,6 +84,7 @@ ALIENS <- list(
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0),
            nrow=12, byrow = TRUE),
+    # The original space invader sprite, with flailing arms.
     matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,
              0,0,0,1,0,0,0,0,1,0,0,0,
