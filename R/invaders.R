@@ -1,3 +1,4 @@
+#' @rdname display_colours
 #' @export
 display_brewer <- function(palette, jitter = TRUE) {
     # First, check for RColorBrewer.
@@ -19,6 +20,41 @@ display_brewer <- function(palette, jitter = TRUE) {
     display_colours(colours, jitter)
 }
 
+#' Display a colour palette using pixel art.
+#' 
+#' @param colours A character vector of colours, either in \code{#rrggbb}
+#'                format or using one of R's built-in colour names.
+#' @param palette A string corresponding to one of \code{RColorBrewer}'s
+#'                palettes.
+#' @param jitter  If \code{TRUE}, it will slightly perturb the colour of each
+#'                pixel --- giving a nice mosaic effect --- by the value of the
+#'                \code{invaders.default.jitter} option. You may also specify
+#'                the jitter amount directly by passing a positive number.
+#'
+#' @return A ggplot object containing a plot of the colour palette.
+#' 
+#' @section Details:
+#' Note that the \code{display_brewer} function cannot be used if the
+#' \code{RColorBrewer} package is not installed.
+#' 
+#' Internally, the functions sample from the list of available sprites, so to
+#' ensure reproducibility in your plots you may want to call \code{set.seed()}.
+#' 
+#' @examples
+#' # Using RColorBrewer's "Paired" palette. --------------- #
+#' library(RColorBrewer)
+#' 
+#' cols <- brewer.pal(12, "Paired") # Define a colour vector.
+#' display_colours(cols)
+#' 
+#' # Which precisely is equivalent to the following:
+#' display_brewer("Paired")
+#' 
+#' # Manually defining a grayscale palette. --------------- #
+#' cols <- c("#111111", "#333333", "#555555",
+#'           "#777777", "#999999", "#BBBBBB")
+#' display_colours(cols)
+#' 
 #' @export
 display_colours <- function(colours, jitter = TRUE) {
     # Check the colours argument.
