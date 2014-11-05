@@ -1,14 +1,21 @@
 Package: invaders
-Title: What the package does (short line)
+Title: Preview colour palettes using pixel art.
 Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (paragraph)
+Authors@R: "Aaron Jacobs <atherie@gmail.com> [aut, cre]"
+Description: In the spirit of terminal colourscheme display
+    scripts, this package provides a small number of functions
+    for previewing colour palettes using pixel art. It has
+    built-in functionality for working with RColorBrewer, but
+    any user-defined colour palettes will work just as well. The
+    package is named for the various `invaders.sh` scripts that
+    inspired it.
 Depends:
     R (>= 3.1.1)
 Imports:
     reshape2,
     ggplot2
 Suggests:
-    data.table
-License: What license is it under?
+    data.table,
+    RColorBrewer
+License: MIT
 LazyData: true
