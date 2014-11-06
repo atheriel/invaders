@@ -1,6 +1,6 @@
 #' @rdname display_colours
 #' @export
-display_brewer <- function(palette, jitter = FALSE) {
+display_brewer <- function(palette, jitter = FALSE, colour.each = FALSE) {
     # First, check for RColorBrewer.
     if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
         stop("The RColorBrewer package is required to use this function.")
@@ -19,7 +19,7 @@ display_brewer <- function(palette, jitter = FALSE) {
 
     # Call the main display function with the colour parameter set by the
     # RColorBrewer palette.
-    display_colours(colours, jitter)
+    display_colours(colours, jitter, colour.each)
 }
 
 #' Display a colour palette using pixel art.
@@ -58,7 +58,7 @@ display_brewer <- function(palette, jitter = FALSE) {
 #' display_colours(cols)
 #' 
 #' @export
-display_colours <- function(colours, jitter = FALSE) {
+display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
     # Check the colours argument.
     if (!is.character(colours))
         stop("The colours argument must be a character vector.")
@@ -75,19 +75,24 @@ display_colours <- function(colours, jitter = FALSE) {
     else
         stop("The jitter argument must be TRUE, FALSE, or a positive numeric.")
 
+    # Check the colour.each argument.
+    if (!is.logical(colour.each))
+        stop("The colour.each argument must be either TRUE or FALSE.")
+
     # Abstract away from the default sprite list (so that it is one day
     # possible to supply one's own spites).
     sprite.list <- INVADERS
 
     # Compute the number of sprites to print, then sample from the available
-    # list of sprites.
-    size <- length(colours) / 2
+    # list of sprites. The number of sprites controlled by the colours vector
+    # as well as the colouring mode -- individual or two-tone.
+    size <- ifelse(colour.each, length(colours), length(colours) / 2)
     sprites <-
         sample(sprite.list, size,
                # If there are a small number of tiles, things are more
                # interesting if the sprites are more diverse. So no replace.
                replace = ifelse(size > length(sprite.list), TRUE, FALSE))
-    
+
     # Create a list of sprite identifiers.
     ids <- LETTERS[1:size]
 
@@ -123,9 +128,22 @@ display_colours <- function(colours, jitter = FALSE) {
     # Merge this into the final data set for plotting.
     final <- merge(alien.list, colour.map, by = c("id", "value"), all = TRUE)
 
+    # This is the single-colour sprite mode.
+    if (colour.each) {
+        whites <- rep("#FFFFFF", times = size)
+        colours <- unlist(mapply(c, whites, colours, SIMPLIFY = FALSE))
+        names(colours) <- NULL
+    }
+
     # Adjust the colour values if a jitter parameter has been supplied.
     if (j.amount != 0) {
-        final$colour <- jitter(final$colour, amount = j.amount)
+        final$colour2 <- jitter(final$colour, amount = j.amount)
+
+        # Don't jitter the background in single-colour mode.
+        if (!colour.each) final$colour <-
+            ifelse(final$value == 0, final$colour, final$colour2)
+
+        final$colour2 <- NULL
     }
 
     # Set the number of rows in the output, using the package option as a rule.
