@@ -1,6 +1,6 @@
 #' @rdname display_colours
 #' @export
-display_brewer <- function(palette, jitter = FALSE, colour.each = FALSE) {
+display_brewer <- function(palette, ...) {
     # First, check for RColorBrewer.
     if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
         stop("The RColorBrewer package is required to use this function.")
@@ -19,7 +19,7 @@ display_brewer <- function(palette, jitter = FALSE, colour.each = FALSE) {
 
     # Call the main display function with the colour parameter set by the
     # RColorBrewer palette.
-    display_colours(colours, jitter, colour.each)
+    display_colours(colours, ...)
 }
 
 #' Display a colour palette using pixel art.
@@ -58,7 +58,8 @@ display_brewer <- function(palette, jitter = FALSE, colour.each = FALSE) {
 #' display_colours(cols)
 #' 
 #' @export
-display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
+display_colours <- function(colours, jitter = FALSE, colour.each = FALSE,
+                            background.tile.colour = "#ffffff") {
     # Check the colours argument.
     if (!is.character(colours))
         stop("The colours argument must be a character vector.")
@@ -78,6 +79,14 @@ display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
     # Check the colour.each argument.
     if (!is.logical(colour.each))
         stop("The colour.each argument must be either TRUE or FALSE.")
+
+    # Check the colours argument.
+    if (!is.character(background.tile.colour))
+        stop("The background.tile.colour argument must be a string.")
+    # Issue a warning when background.tile.colour is specified unnecessarily.
+    if (!colour.each && background.tile.colour != "#ffffff")
+        warning(paste("Single colour mode specified;",
+                      "the background.tile.colour parameter will be ignored."))
 
     # Abstract away from the default sprite list (so that it is one day
     # possible to supply one's own spites).
@@ -130,8 +139,8 @@ display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
 
     # This is the single-colour sprite mode.
     if (colour.each) {
-        whites <- rep("#FFFFFF", times = size)
-        colours <- unlist(mapply(c, whites, colours, SIMPLIFY = FALSE))
+        bgs <- rep(background.tile.colour, times = size)
+        colours <- unlist(mapply(c, bgs, colours, SIMPLIFY = FALSE))
         names(colours) <- NULL
     }
 
@@ -140,8 +149,10 @@ display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
         final$colour2 <- jitter(final$colour, amount = j.amount)
 
         # Don't jitter the background in single-colour mode.
-        if (!colour.each) final$colour <-
+        if (colour.each) final$colour <-
             ifelse(final$value == 0, final$colour, final$colour2)
+        else
+            final$colour <- final$colour2
 
         final$colour2 <- NULL
     }
@@ -152,7 +163,7 @@ display_colours <- function(colours, jitter = FALSE, colour.each = FALSE) {
     # Create and return a ggplot2 object.
     g <-
         ggplot2::ggplot(final, ggplot2::aes(x = x, y = y, fill = colour)) +
-        ggplot2::geom_tile(colour = "gray65", size = 0.01) +
+        ggplot2::geom_tile(colour = NA, size = 0.01) +
         ggplot2::scale_fill_gradientn(colours = colours) +
         ggplot2::scale_y_continuous(expand = c(0, 0), trans = "reverse") +
         ggplot2::scale_x_continuous(expand = c(0, 0)) +
