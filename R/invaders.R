@@ -1,6 +1,6 @@
 #' @rdname display_colours
 #' @export
-display_brewer <- function(palette, jitter = TRUE) {
+display_brewer <- function(palette, jitter = FALSE) {
     # First, check for RColorBrewer.
     if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
         stop("The RColorBrewer package is required to use this function.")
@@ -9,11 +9,13 @@ display_brewer <- function(palette, jitter = TRUE) {
     # Check the palette argument.
     if (!is.character(palette))
         stop("The palette argument must be a string.")
-    if (is.na(brewer.pal.info[palette, 'maxcolors']))
+    if (is.na(RColorBrewer::brewer.pal.info[palette, 'maxcolors']))
         stop(paste(palette, "is not a recognized RColorBrewer palette."))
 
     # Extract the full palette of colours from RColorBrewer.
-    colours <- brewer.pal(brewer.pal.info[palette, 'maxcolors'], palette)
+    colours <- RColorBrewer::brewer.pal(
+        RColorBrewer::brewer.pal.info[palette, 'maxcolors'], palette
+    )
 
     # Call the main display function with the colour parameter set by the
     # RColorBrewer palette.
@@ -56,7 +58,7 @@ display_brewer <- function(palette, jitter = TRUE) {
 #' display_colours(cols)
 #' 
 #' @export
-display_colours <- function(colours, jitter = TRUE) {
+display_colours <- function(colours, jitter = FALSE) {
     # Check the colours argument.
     if (!is.character(colours))
         stop("The colours argument must be a character vector.")
@@ -143,7 +145,7 @@ display_colours <- function(colours, jitter = TRUE) {
             axis.title = ggplot2::element_blank(),
             axis.ticks = ggplot2::element_blank(),
             strip.background = ggplot2::element_blank(),
-            strip.text = ggplot2::element_blank(),
+            strip.text.x = ggplot2::element_blank(),
             legend.position = "none",
             panel.grid = ggplot2::element_blank(),
             panel.background = ggplot2::element_rect(fill = NA, colour = NA))

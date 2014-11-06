@@ -4,9 +4,9 @@
 \alias{display_colours}
 \title{Display a colour palette using pixel art.}
 \usage{
-display_brewer(palette, jitter = TRUE)
+display_brewer(palette, jitter = FALSE)
 
-display_colours(colours, jitter = TRUE)
+display_colours(colours, jitter = FALSE)
 }
 \arguments{
 \item{palette}{A string corresponding to one of \code{RColorBrewer}'s
